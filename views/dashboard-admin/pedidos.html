@@ -132,6 +132,51 @@ h1 {
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+.sidebar {
+    width: 250px;
+    background-color: rgb(248, 165, 251);
+    color: white;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+}
+
+.sidebar-header {
+    padding: 20px;
+    text-align: center;
+    background-color: rgb(244, 160, 247);
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+}
+
+.back-button {
+    color: #fff;
+    font-size: 1.2rem;
+    margin-right: 1rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.back-button:hover {
+    color: #ddd;
+}
+
+/* Asegúrate de que el ícono de flecha tenga el tamaño adecuado */
+.back-button i {
+    font-size: 1.2rem;
+}
+
 
     </style>
 </head>
