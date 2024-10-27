@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos</title>
+
+    <style>
+    /* Estilos Generales */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f7fa;
+  color: #333;
+}
+
+/* Contenedor Principal */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Título */
+h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Tabla de Pedidos */
+.table {
+  margin-top: 20px;
+}
+
+.table thead {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.table thead th {
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 12px;
+}
+
+.table tbody tr {
+  transition: background-color 0.3s ease;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.table tbody td {
+  padding: 10px;
+}
+
+/* Botones de Acción */
+.btn {
+  margin: 0 2px;
+}
+
+.btn-info {
+  background-color: #17a2b8;
+  border: none;
+}
+
+.btn-warning {
+  background-color: #ffc107;
+  border: none;
+  color: #333;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border: none;
+}
+
+.btn-info:hover,
+.btn-warning:hover,
+.btn-danger:hover {
+  opacity: 0.8;
+}
+
+/* Sección de Detalle del Pedido */
+#detallePedido {
+    display: none;
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+#detallePedido h3 {
+  font-size: 1.5rem;
+  color: #007bff;
+  margin-bottom: 15px;
+}
+
+#detalleOrden td {
+  padding: 10px;
+}
+
+/* Botón de Cerrar Detalle */
+.btn-secondary {
+  background-color: #6c757d;
+  color: #fff;
+  margin-top: 15px;
+  border: none;
+  transition: background-color 0.3s;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.modal {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+    </style>
+</head>
+<body>
+  <div class="orders-container">
+    <h1>Gestión de Pedidos</h1>
+    
+    <!-- Formulario para agregar o editar pedidos -->
+    <div class="order-form">
+        <h2>Agregar / Editar Pedido</h2>
+        <form id="orderForm">
+            <label for="order-id">ID de Pedido</label>
+            <input type="text" id="order-id" placeholder="ID (auto-generado)" disabled>
+
+            <label for="order-customer">Cliente</label>
+            <input type="text" id="order-customer" placeholder="Nombre del cliente" required>
+
+            <label for="order-date">Fecha</label>
+            <input type="date" id="order-date" required>
+
+            <label for="order-status">Estado</label>
+            <select id="order-status" required>
+                <option value="pendiente">Pendiente</option>
+                <option value="procesando">Procesando</option>
+                <option value="completado">Completado</option>
+                <option value="cancelado">Cancelado</option>
+            </select>
+
+            <button type="submit" class="save-button">Guardar Pedido</button>
+        </form>
+    </div>
+
+    <!-- Tabla de pedidos -->
+    <div class="order-table">
+        <h2>Lista de Pedidos</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="order-list">
+                <!-- Aquí se cargarán los pedidos dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+  // Simulación de pedidos para fines de ejemplo
+let orders = [
+{ id: 1, customer: 'Juan Pérez', date: '2024-10-20', status: 'pendiente' },
+{ id: 2, customer: 'Ana García', date: '2024-10-22', status: 'completado' }
+];
+
+// Cargar pedidos en la tabla
+function loadOrders() {
+const orderList = document.getElementById('order-list');
+orderList.innerHTML = '';
+
+orders.forEach(order => {
+  const row = document.createElement('tr');
+  row.innerHTML = `
+      <td>${order.id}</td>
+      <td>${order.customer}</td>
+      <td>${order.date}</td>
+      <td>${order.status}</td>
+      <td>
+          <button class="action-button edit-button" onclick="editOrder(${order.id})">Editar</button>
+          <button class="action-button delete-button" onclick="deleteOrder(${order.id})">Eliminar</button>
+      </td>
+  `;
+  orderList.appendChild(row);
+});
+}
+
+// Agregar o actualizar un pedido
+document.getElementById('orderForm').addEventListener('submit', function(event) {
+event.preventDefault();
+
+const orderId = document.getElementById('order-id').value;
+const customer = document.getElementById('order-customer').value;
+const date = document.getElementById('order-date').value;
+const status = document.getElementById('order-status').value;
+
+if (orderId) {
+  // Editar pedido existente
+  const order = orders.find(o => o.id == orderId);
+  order.customer = customer;
+  order.date = date;
+  order.status = status;
+} else {
+  // Agregar nuevo pedido
+  const newOrder = {
+      id: orders.length + 1,
+      customer,
+      date,
+      status
+  };
+  orders.push(newOrder);
+}
+
+document.getElementById('orderForm').reset();
+loadOrders();
+});
+
+// Editar pedido
+function editOrder(id) {
+const order = orders.find(o => o.id == id);
+document.getElementById('order-id').value = order.id;
+document.getElementById('order-customer').value = order.customer;
+document.getElementById('order-date').value = order.date;
+document.getElementById('order-status').value = order.status;
+}
+
+// Eliminar pedido
+function deleteOrder(id) {
+orders = orders.filter(order => order.id !== id);
+loadOrders();
+}
+
+// Cargar pedidos iniciales
+loadOrders();
+
+</script>
+<script src="/controllers/crudRoutes.js"></script>
+    <script src="/controllers/dashboardPedidos.js"></script>
+</body>
+</html>
+        

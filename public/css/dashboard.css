@@ -1,0 +1,72 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #FFE5E5;
+    color: #4A4A4A;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #FFB6C1;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    color: #FF69B4;
+    margin: 0;
+}
+
+main {
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #FFF0F5;
+    margin-bottom: 20px;
+}
+
+th, td {
+    border: 1px solid #FFB6C1;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #FFB6C1;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #FFF5EE;
+}
+
+.report-buttons {
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: #FF69B4;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #FF1493;
+}
+
+#reportContainer {
+    background-color: #FFF0F5;
+    padding: 20px;
+    border-radius: 5px;
+}

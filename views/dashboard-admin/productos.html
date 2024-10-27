@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos - LUMINAR</title>
+    <!-- FLATICON -->
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <!-- SWEETALERT2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/productos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Estilos generales */
+/* Ajustes para el layout principal */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Contenedor principal */
+.orders-container {
+    width: 90%;
+    max-width: 800px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Títulos */
+h1, h2 {
+    color: #333;
+    text-align: center;
+    margin-top: 0;
+}
+
+/* Formulario */
+.order-form {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+    color: #555;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.save-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.save-button:hover {
+    background-color: #45a049;
+}
+
+/* Tabla */
+.order-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.order-table th,
+.order-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.order-table th {
+    background-color: #f8f8f8;
+    color: #333;
+    font-weight: bold;
+}
+
+.order-table td {
+    background-color: #fff;
+}
+
+/* Botones de acción */
+.action-button {
+    padding: 6px 10px;
+    margin: 2px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 14px;
+}
+
+.edit-button {
+    background-color: #ffa500;
+}
+
+.delete-button {
+    background-color: #d9534f;
+}
+/* Estilos generales */
+:root {
+    --primary-color: #007bff;
+    --danger-color: #dc3545;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --gray-color: #6c757d;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Formulario */
+.form-container {
+    display: none;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Tabla */
+.table-container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Botones */
+button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-add {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-edit {
+    background: var(--warning-color);
+    color: white;
+}
+
+.btn-delete {
+    background: var(--danger-color);
+    color: white;
+}
+
+/* Estados */
+.estado-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+.activo { background: var(--success-color); color: white; }
+.inactivo { background: var(--gray-color); color: white; }
+.agotado { background: var(--danger-color); color: white; }
+
+/* Imágenes */
+.producto-imagen {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+/* En public/css/productos.css */
+.form-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+    max-width: 600px;
+    width: 90%;
+}
+
+.form-container .form-title {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.form-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.form-actions button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.form-actions button[type="submit"] {
+    background: var(--primary-color);
+    color: white;
+}
+
+.form-actions button#cancelBtn {
+    background: var(--gray-color);
+    color: white;
+}
+/* Contenedor principal */
+.container {
+    flex: 1;
+    margin-left: 250px; /* Mismo ancho que el sidebar */
+    padding: 20px;
+    min-height: 100vh;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+/* Estilos del sidebar */
+.sidebar {
+    width: 250px;
+    background-color: rgb(248, 165, 251);
+    color: white;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.sidebar-header {
+    padding: 20px;
+    text-align: center;
+    background-color: rgb(244, 160, 247);
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+}
+
+.back-button {
+    color: #fff;
+    font-size: 1.2rem;
+    margin-right: 1rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.back-button:hover {
+    color: #ddd;
+}
+/* Ajustes para el formulario modal */
+.form-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    z-index: 1100; /* Mayor que el sidebar */
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Tabla contenedora */
+.table-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow-x: auto; /* Para tablas responsivas */
+}
+
+/* Ajustes responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+    }
+    
+    .container {
+        margin-left: 200px;
+    }
+}
+
+@media (max-width: 576px) {
+    .sidebar {
+        width: 0;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+    
+    .sidebar.active {
+        width: 250px;
+        transform: translateX(0);
+    }
+    
+    .container {
+        margin-left: 0;
+    }
+}
+
+/* Ajuste para la tabla */
+.table-container table {
+    width: 100%;
+    min-width: 1000px; /* Asegura que la tabla no se comprima demasiado */
+}
+
+/* Estilos para el overlay del formulario */
+.form-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1050;
+}
+/* Asegúrate de que el ícono de flecha tenga el tamaño adecuado */
+.back-button i {
+    font-size: 1.2rem;
+}
+.menu-item {
+    padding: 15px;
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu-item:hover, .menu-item.active {
+    background-color: rgb(251, 135, 255);
+}
+
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card i {
+    font-size: 2rem;
+    color: #333;
+}
+
+.stat-info h3 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.stat-info p {
+    margin: 5px 0 0;
+    color: rgb(61, 61, 61);
+}
+
+.chart-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+/* Contenedor de configuraciones */
+.form-container {
+    flex: 1;
+    margin-left: 250px;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a href="../dashboard-admin.html" class="back-button"><i class="fas fa-arrow-left"></i></a>
+            <h2>Gestión de Productos</h2>
+        </div>
+        <nav class="sidebar-menu">
+            <a href="#" class="menu-item active"><i class="fas fa-home"></i> Resumen General</a>
+            <a href="../views/dashboard-admin/productos.html" class="menu-item"><i class="fas fa-box"></i> Productos</a>
+            <a href="../views/dashboard-admin/pedidos.html" class="menu-item"><i class="fas fa-shopping-cart"></i> Pedidos</a>
+            <a href="../views/dashboard-admin/usuarios.html" class="menu-item"><i class="fas fa-users"></i> Usuarios</a>
+            <a href="../views/dashboard-admin/reportes.html" class="menu-item"><i class="fas fa-chart-line"></i> Reportes</a>
+            <a href="../views/dashboard-admin/notificaciones.html" class="menu-item"><i class="fas fa-bell"></i> Notificaciones</a>
+            <a href="../views/dashboard-admin/config-admin.html" class="menu-item"><i class="fas fa-cog"></i> Configuración</a>
+        </nav>
+    </aside>
+    <div class="container">
+        
+        
+        <!-- En productos.html -->
+<div class="form-container" style="display: none;">
+    <h2 class="form-title">Nuevo Producto</h2>
+    <form id="productoForm">
+        <input type="hidden" id="producto_id">
+        <div class="form-group">
+            <label for="nombre_producto">Nombre del Producto</label>
+            <input type="text" id="nombre_producto" name="nombre_producto" required>
+        </div>
+        <div class="form-group">
+            <label for="descripcion">Descripción</label>
+            <textarea id="descripcion" name="descripcion" required></textarea>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="talla">Talla</label>
+                <input type="text" id="talla" name="talla" required>
+            </div>
+            <div class="form-group">
+                <label for="color">Color</label>
+                <input type="text" id="color" name="color" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="precio">Precio</label>
+                <input type="number" id="precio" name="precio" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="cantidad_stock">Stock</label>
+                <input type="number" id="cantidad_stock" name="cantidad_stock" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="categoria_id">Categoría</label>
+            <select id="categoria_id" name="categoria_id" required>
+                <!-- Se llenará dinámicamente -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="imagen">Imagen</label>
+            <input type="file" id="imagen" name="imagen" accept="image/*">
+        </div>
+        <div class="form-actions">
+            <button type="submit">Guardar</button>
+            <button type="button" id="cancelBtn">Cancelar</button>
+        </div>
+    </form>
+</div>
+        <!-- Tabla de Productos -->
+        <div class="table-container">
+            <div class="table-header">
+                <input type="text" id="searchInput" placeholder="Buscar productos...">
+                <button id="addBtn" class="btn-add">
+                    <i class="fi fi-rr-plus"></i> Nuevo Producto
+                </button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Talla</th>
+                        <th>Color</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Categoría</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="productosTableBody">
+                    <!-- Se llenará dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    // Referencias a elementos del DOM
+    const formContainer = document.querySelector('.form-container');
+    const addBtn = document.getElementById('addBtn');
+    const productoForm = document.getElementById('productoForm');
+    const cancelBtn = document.getElementById('cancelBtn');
+
+    // Event Listeners
+    addBtn.addEventListener('click', showForm);
+    cancelBtn.addEventListener('click', hideForm);
+    productoForm.addEventListener('submit', handleSubmit);
+
+    // Función para mostrar el formulario
+    function showForm() {
+        formContainer.style.display = 'block';
+        productoForm.reset();
+        document.getElementById('producto_id').value = '';
+        document.querySelector('.form-title').textContent = 'Nuevo Producto';
+    }
+
+    // Función para ocultar el formulario
+    function hideForm() {
+        formContainer.style.display = 'none';
+        productoForm.reset();
+    }
+
+    // Función para manejar el envío del formulario
+    async function handleSubmit(e) {
+        e.preventDefault();
+
+        try {
+            const formData = new FormData(productoForm);
+            const productoId = document.getElementById('producto_id').value;
+
+            const response = await fetch(
+                productoId ? `/api/crud/productos/${productoId}` : '/api/crud/productos',
+                {
+                    method: productoId ? 'PUT' : 'POST',
+                    body: formData
+                }
+            );
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.msg);
+            }
+
+            await Swal.fire({
+                icon: 'success',
+                title: productoId ? 'Producto actualizado' : 'Producto creado',
+                timer: 2000,
+                showConfirmButton: false
+            });
+
+            hideForm();
+            loadProductos();
+        } catch (error) {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message
+            });
+        }
+    }
+
+    // Cargar productos al iniciar
+    loadProductos();
+});
+    </script>
+
+    <!-- Al final del body en productos.html -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/public/js/productos.js"></script>
+</body>
+</html>

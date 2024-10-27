@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/login.css">
+    <title>Login</title>
+</head>
+
+<body>
+    <h1>Luminar Login</h1>
+
+    <div class="container" id="container">
+        <!-- Registro -->
+        <div class="form-container sign-up">
+            <form id="register-form">
+                <h1>Crea tu cuenta</h1>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-google"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <span>Utilice su correo electrónico para registrarse</span>
+                <input type="text" id="register-nombre" placeholder="Nombre" required>
+                <input type="text" id="register-apellido" placeholder="Apellido" required>
+                <input type="email" id="register-email" placeholder="Email" required>
+                <input type="password" id="register-password" placeholder="Password" required minlength="6">
+                <button type="button" id="register">Registrarte</button>
+            </form>
+        </div>
+
+        <!-- Inicio de Sesión -->
+        <div class="form-container sign-in">
+            <form id="login-form">
+                <h1>Iniciar sesión</h1>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-google"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <span>Utiliza tu contraseña de correo electrónico</span>
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required minlength="6">
+                <a href="#">¿Has olvidado tu contraseña?</a>
+                <button type="button" id="login">Iniciar sesión</button>
+            </form>
+        </div>
+
+        <!-- Contenedor de Cambio -->
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Bienvenido</h1>
+                    <p>Ingrese los datos solicitados</p>
+                    <button class="hidden" id="signIn">Iniciar sesión</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>Bienvenido</h1>
+                    <p>Ingrese los datos solicitados</p>
+                    <button class="hidden" id="signUp">Registrarse</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Elementos DOM
+        const container = document.getElementById('container');
+        const registerBtn = document.getElementById('signUp');
+        const loginBtn = document.getElementById('signIn');
+        const registerFormBtn = document.getElementById('register');
+        const loginFormBtn = document.getElementById('login');
+
+        // Mostrar formulario de Registro
+        registerBtn.addEventListener('click', () => {
+            container.classList.add("active");
+        });
+
+        // Mostrar formulario de Inicio de Sesión
+        loginBtn.addEventListener('click', () => {
+            container.classList.remove("active");
+        });
+
+        // Función para guardar sesión
+        function guardarSesion(token, rolId) {
+            localStorage.setItem('token', token);
+            localStorage.setItem('rol_id', rolId);
+
+            // Redirigir según el rol
+            switch (parseInt(rolId)) {
+                case 1:
+                    window.location.href = '/dashboard-cliente';
+                    break;
+                case 2:
+                    window.location.href = '/dashboard-vendedor';
+                    break;
+                case 3:
+                    window.location.href = '/dashboard-admin';
+                    break;
+                default:
+                    alert('Rol desconocido. No tienes permisos para acceder a esta página.');
+                    window.location.href = '/';
+            }
+        }
+
+        // Registro
+        registerFormBtn.addEventListener('click', async () => {
+            const nombre = document.getElementById('register-nombre').value.trim();
+            const apellido = document.getElementById('register-apellido').value.trim();
+            const correo_electronico = document.getElementById('register-email').value.trim();
+            const contrasena = document.getElementById('register-password').value.trim();
+
+            // Validación de campos
+            if (!nombre || !apellido || !correo_electronico || !contrasena) {
+                alert('Por favor, complete todos los campos para registrarse.');
+                return;
+            }
+
+            const data = { nombre, apellido, correo_electronico, contrasena, rol_id: 1 };
+
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    guardarSesion(result.token, result.rol_id);
+                    alert(`Registro exitoso! Bienvenido, ${nombre}. Ya puedes acceder a nuestros servicios.`);
+                } else {
+                    const error = await response.json();
+                    alert('Error en el registro: ' + (error.msg || 'Error desconocido.'));
+                }
+            } catch (err) {
+                console.error('Error en la solicitud de registro:', err);
+                alert('Error del servidor. Por favor, intenta nuevamente más tarde.');
+            }
+        });
+
+        // Inicio de Sesión
+        loginFormBtn.addEventListener('click', async () => {
+            const correo_electronico = document.getElementById('login-email').value.trim();
+            const contrasena = document.getElementById('login-password').value.trim();
+
+            // Validación de campos
+            if (!correo_electronico || !contrasena) {
+                alert('Por favor, complete todos los campos para iniciar sesión.');
+                return;
+            }
+
+            const data = { correo_electronico, contrasena };
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    guardarSesion(result.token, result.rol_id);
+                    alert(`Inicio de sesión exitoso! Bienvenido de nuevo, ${correo_electronico}.`);
+                } else {
+                    const error = await response.json();
+                    alert('Error al iniciar sesión: ' + (error.msg || 'Error desconocido.'));
+                }
+            } catch (err) {
+                console.error('Error en la solicitud de inicio de sesión:', err);
+                alert('Error del servidor. Por favor, intenta nuevamente más tarde.');
+            }
+        });
+
+        // Cerrar Sesión
+        const logoutBtn = document.getElementById('logout');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', cerrarSesion);
+        }
+
+        function cerrarSesion() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('rol_id');
+            alert('Has cerrado sesión exitosamente.');
+            window.location.href = '/'; // Redirigir al inicio de sesión
+        }
+    </script>
+</body>
+
+</html>

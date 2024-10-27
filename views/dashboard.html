@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<<<<<<< HEAD
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--==FLATICON==-->
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css'>
+
+    <!--==SWIPER CSS==-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <!--==CSS==-->
+    <link rel="stylesheet" href="css/style.css">
+    <title>Dashboard Multi-Rol - LUMINAR</title>
+</head>
+
+<body>
+    <!--== HEADER ==-->
+    <header class="header">
+        <div class="header__top">
+            <div class="header__container container">
+                <div class="header__contact">
+                    <span>(+00) - 000 - 000</span>
+                    <span>Locación</span>
+                </div>
+
+                <p class="header__alert-news">Bienvenido a tu Dashboard - <span id="user-role">[Rol del Usuario]</span></p>
+
+                <a href="#" id="logout" class="header__top-action">
+                    Cerrar Sesión
+                </a>
+            </div>
+        </div>
+
+        <nav class="nav container">
+            <a href="/index" class="nav__logo">
+                <img src="assets/img/Logo-Luminar.svg" alt="Luminar Logo" class="nav__logo-img">
+            </a>
+
+            <div class="nav__menu" id="nav__menu">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/index" class="nav__link">HOME</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/shop" class="nav__link">Shop</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link active-link">Mi cuenta</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="compare.html" class="nav__link">Comparar</a>
+                    </li>
+                </ul>
+
+                <div class="header_search">
+                    <input type="text" placeholder="Buscar productos..." class="form__input">
+                    <button class="search__btn">
+                        <i class="fi fi-rr-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="header__user-actions">
+                <a href="/whishlist" class="header__action-btn">
+                    <img src="assets/img/icon-heart.svg" alt="Wishlist">
+                    <span class="count">3</span>
+                </a>
+
+                <a href="/cart" class="header__action-btn">
+                    <img src="assets/img/icon-cart.svg" alt="Carrito">
+                    <span class="count">3</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!--=== DASHBOARD ===-->
+    <section class="dashboard section--lg">
+        <div class="dashboard__container container">
+            <h2>Bienvenido, <span id="user-name">[Nombre del Usuario]</span></h2>
+            <p>Bienvenido al sistema. Aquí puedes gestionar y visualizar las diferentes funcionalidades disponibles según tu rol.</p>
+
+            <div class="dashboard__options grid">
+                <!-- Opciones Comunes -->
+                <div class="dashboard__card">
+                    <i class="fi fi-rr-box"></i>
+                    <h3>Mis Ideas de Productos</h3>
+                    <p>Administra tus ideas de productos agrícolas.</p>
+                    <a href="/ideas" class="btn">Ver Ideas</a>
+                </div>
+
+                <!-- Funcionalidades de Usuario Cliente -->
+                <div class="dashboard__card user-only">
+                    <i class="fi fi-rr-heart"></i>
+                    <h3>Productos Favoritos</h3>
+                    <p>Accede a la lista de productos que has agregado a favoritos.</p>
+                    <a href="/whishlist" class="btn">Ver Favoritos</a>
+                </div>
+
+                <!-- Funcionalidades de Analista -->
+                <div class="dashboard__card analyst-only">
+                    <i class="fi fi-rr-analysis"></i>
+                    <h3>Evaluación de Ideas</h3>
+                    <p>Evalúa la viabilidad de las ideas propuestas por ti.</p>
+                    <a href="/evaluate-ideas" class="btn">Evaluar Ideas</a>
+                </div>
+                <div class="dashboard__card analyst-only">
+                    <i class="fi fi-rr-report"></i>
+                    <h3>Generación de Reportes</h3>
+                    <p>Genera reportes detallados de las ideas evaluadas.</p>
+                    <a href="/generate-reports" class="btn">Generar Reportes</a>
+                </div>
+
+                <!-- Funcionalidades del Administrador -->
+                <div class="dashboard__card admin-only">
+                    <i class="fi fi-rr-user-settings"></i>
+                    <h3>Gestión de Usuarios</h3>
+                    <p>Gestiona los usuarios y sus roles en el sistema.</p>
+                    <a href="/manage-users" class="btn">Gestionar Usuarios</a>
+                </div>
+                <div class="dashboard__card admin-only">
+                    <i class="fi fi-rr-settings-sliders"></i>
+                    <h3>Configuraciones del Sistema</h3>
+                    <p>Configura parámetros y ajustes generales del sistema.</p>
+                    <a href="/system-settings" class="btn">Configuraciones</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--=== SWIPER JS ===-->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!--=== MAIN JS ===-->
+    <script src="assets/js/main.js"></script>
+
+    <!-- Cerrar Sesión -->
+    <script>
+        const logoutBtn = document.getElementById('logout');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                localStorage.removeItem('token'); // Eliminar el token
+                alert('Has cerrado sesión exitosamente.');
+                window.location.href = '/'; // Redirigir a la página de inicio de sesión
+            });
+        }
+
+        // Obtener el nombre del usuario y su rol desde el token y mostrarlo
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                try {
+                    const payload = JSON.parse(atob(token.split('.')[1]));
+                    document.getElementById('user-name').innerText = payload.nombre || 'Usuario';
+                    document.getElementById('user-role').innerText = getRoleName(payload.rol_id);
+
+                    // Mostrar/ocultar funcionalidades según el rol
+                    const roleId = payload.rol_id;
+                    if (roleId === 1) {
+                        document.querySelectorAll('.user-only').forEach(el => el.style.display = 'block');
+                    } else if (roleId === 2) {
+                        document.querySelectorAll('.analyst-only').forEach(el => el.style.display = 'block');
+                    } else if (roleId === 3) {
+                        document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'block');
+                    }
+                } catch (err) {
+                    console.error('Error al decodificar el token:', err);
+                    alert('Error en la autenticación. Inicie sesión nuevamente.');
+                    localStorage.removeItem('token');
+                    window.location.href = '/';
+                }
+            } else {
+                window.location.href = '/';
+            }
+        });
+
+        function getRoleName(rolId) {
+            switch (rolId) {
+                case 1:
+                    return 'Cliente';
+                case 2:
+                    return 'Analista';
+                case 3:
+                    return 'Administrador';
+                default:
+                    return 'Usuario';
+            }
+        }
+    </script>
+</body>
+
+</html>
+=======
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../public/css/dashboard.css">
+</head>
+<body>
+    <header>
+        <h1>Dashboard</h1>
+    </header>
+    <main>
+        <div id="dashboard"></div>
+        <div class="report-buttons">
+            <button id="generateGeneralReport">Generar Reporte General</button>
+            <button id="exportPDF">Exportar a PDF</button>
+            <button id="exportExcel">Exportar a  Excel</button>
+        </div>
+        <div id="reportContainer"></div>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="../public/js/dashboard.js"></script>
+</body>
+</html>
+>>>>>>> cabf8a8430fdd2453757cf4cd24c98797328639f

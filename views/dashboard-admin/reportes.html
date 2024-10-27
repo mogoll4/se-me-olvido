@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar Reporte</title>
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+button {
+    margin: 5px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Generar Reporte</h1>
+        <div class="mt-3">
+            <button class="btn btn-primary" onclick="generarPDF()">Generar PDF</button>
+            <button class="btn btn-secondary" onclick="generarExcel()">Generar Excel</button>
+        </div>
+    </div>
+
+    <script>
+        function generarPDF() {
+            window.location.href = '/reporte/pdf';
+        }
+
+        function generarExcel() {
+            window.location.href = '/reporte/excel';
+        }
+    </script>
+</body>
+</html>

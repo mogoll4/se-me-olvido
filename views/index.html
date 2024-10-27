@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--==FLATICON==-->
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css'>
+
+    <!--==SWIPER CSS==-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <!--==CSS==-->
+    <link rel="stylesheet" href="css/style.css">
+    <title>Página de Inicio - LUMINAR</title>
+</head>
+
+<body>
+    <!--== HEADER ==-->
+    <header class="header">
+        <div class="header__top">
+            <div class="header__container container">
+                <div class="header__contact">
+                    <span>(+00) - 000 - 000</span>
+                    <span>Locación</span>
+                </div>
+
+                <p class="header__alert-news">BLA-BLA-BLA</p>
+
+                <a href="/" class="header__top-action">
+                    Log In / Sign up
+                </a>
+            </div>
+        </div>
+
+        <nav class="nav container">
+            <a href="/index" class="nav__logo">
+                <img src="assets/img/Logo-Luminar.svg" alt="Luminar Logo" class="nav__logo-img">
+            </a>
+
+            <div class="nav__menu" id="nav__menu">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/index" class="nav__link active-link">HOME</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/shop" class="nav__link">Shop</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link">Mi cuenta</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="compare.html" class="nav__link">Comparar</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/" class="nav__link">Login</a>
+                    </li>
+                </ul>
+
+                <div class="header_search">
+                    <input type="text" placeholder="Buscar productos..." class="form__input">
+                    <button class="search__btn">
+                        <i class="fi fi-rr-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="header__user-actions">
+                <a href="/whishlist" class="header__action-btn">
+                    <img src="assets/img/icon-heart.svg" alt="Wishlist">
+                    <span class="count">3</span>
+                </a>
+
+                <a href="/cart" class="header__action-btn">
+                    <img src="assets/img/icon-cart.svg" alt="Carrito">
+                    <span class="count">3</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!--=== HOME ===-->
+    <section class="home section--lg">
+        <div class="home__container container grid">
+            <div class="home__content">
+                <span class="home__subtitle">Hot promotions</span>
+                <h1 class="home__title">
+                    Fashion Trending <span>Great Collection</span>
+                </h1>
+                <p class="home__description">
+                    Save more with coupons & up to 20% off
+                </p>
+                <a href="/shop" class="btn">Shop now</a>
+            </div>
+            <img src="assets/img/home-img.png" alt="Imagen Promocional" class="home__img">
+        </div>
+    </section>
+
+    <!--=== CATEGORIES ===-->
+    <section class="categories container section">
+        <h3 class="section__title">
+            <span>Popular</span> Categories
+        </h3>
+
+        <div class="categories__container swiper">
+            <div class="swiper-wrapper">
+                <a href="/shop" class="category__item swiper-slide">
+                    <img src="assets/img/category-1.jpg" alt="Categoría T-Shirt" class="category__img">
+                    <h3 class="category__title">T-Shirt</h3>
+                </a>
+                <a href="/shop" class="category__item swiper-slide">
+                    <img src="assets/img/category-2.jpg" alt="Categoría Bolsos" class="category__img">
+                    <h3 class="category__title">Bags</h3>
+                </a>
+                <a href="/shop" class="category__item swiper-slide">
+                    <img src="assets/img/category-3.jpg" alt="Categoría Sandalias" class="category__img">
+                    <h3 class="category__title">Sandals</h3>
+                </a>
+                <a href="/shop" class="category__item swiper-slide">
+                    <img src="assets/img/category-4.jpg" alt="Categoría Bufandas" class="category__img">
+                    <h3 class="category__title">Scarf Cap</h3>
+                </a>
+                <a href="/shop" class="category__item swiper-slide">
+                    <img src="assets/img/category-5.jpg" alt="Categoría Zapatos" class="category__img">
+                    <h3 class="category__title">Shoes</h3>
+                </a>
+                <a href="/shop" class="category__item swiper-slide">
+                    <img src="assets/img/category-6.jpg" alt="Categoría Funda de Almohada" class="category__img">
+                    <h3 class="category__title">Pillowcase</h3>
+                </a>
+            </div>
+
+            <!-- Controles de Swiper -->
+            <div class="swiper-button-next">
+                <i class="fi fi-rr-angle-right"></i>
+            </div>
+            <div class="swiper-button-prev">
+                <i class="fi fi-rr-angle-left"></i>
+            </div>
+        </div>
+    </section>
+
+    <!--=== SWIPER JS ===-->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!--=== MAIN JS ===-->
+    <script src="assets/js/main.js"></script>
+
+    <!-- Inicialización de Swiper -->
+    <script>
+        const swiper = new Swiper('.swiper', {
+            loop: true,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            slidesPerView: 4,
+            spaceBetween: 20,
+            breakpoints: {
+                768: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 },
+                1200: { slidesPerView: 4 }
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios</title>
+    <link rel="stylesheet" href="/path/to/your/styles.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Encabezados */
+h1, h2 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Contenedor del formulario */
+#user-form {
+    width: 90%;
+    max-width: 500px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+#user-form label {
+    font-weight: bold;
+    color: #555;
+    margin: 10px 0 5px;
+    display: block;
+}
+
+#user-form input[type="text"],
+#user-form input[type="email"],
+#user-form input[type="password"],
+#user-form input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Botones del formulario */
+#user-form button {
+    padding: 10px 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+#user-form button[type="submit"] {
+    background-color: #4CAF50;
+    color: #fff;
+}
+
+#user-form button[type="button"] {
+    background-color: #d9534f;
+    color: #fff;
+    margin-left: 10px;
+}
+
+#user-form button:hover {
+    opacity: 0.9;
+}
+
+/* Tabla de usuarios */
+table {
+    width: 90%;
+    max-width: 800px;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+table th, table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+table th {
+    background-color: #f8f8f8;
+    color: #333;
+    font-weight: bold;
+}
+
+table td {
+    background-color: #fff;
+}
+
+/* Botones de acción */
+.action-button {
+    padding: 6px 12px;
+    margin: 2px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.edit-button {
+    background-color: #ffa500;
+}
+
+.delete-button {
+    background-color: #d9534f;
+}
+
+.action-button:hover {
+    opacity: 0.9;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: rgb(248, 165, 251);
+    color: white;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+}
+
+.sidebar-header {
+    padding: 20px;
+    text-align: center;
+    background-color: rgb(244, 160, 247);
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+}
+
+.back-button {
+    color: #fff;
+    font-size: 1.2rem;
+    margin-right: 1rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.back-button:hover {
+    color: #ddd;
+}
+
+/* Asegúrate de que el ícono de flecha tenga el tamaño adecuado */
+.back-button i {
+    font-size: 1.2rem;
+}
+.menu-item {
+    padding: 15px;
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu-item:hover, .menu-item.active {
+    background-color: rgb(251, 135, 255);
+}
+
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card i {
+    font-size: 2rem;
+    color: #333;
+}
+
+.stat-info h3 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.stat-info p {
+    margin: 5px 0 0;
+    color: rgb(61, 61, 61);
+}
+
+.chart-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+/* Contenedor de configuraciones */
+.settings-container {
+    flex: 1;
+    margin-left: 250px;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+/* Adaptación a pantallas pequeñas */
+@media (max-width: 600px) {
+    table, #user-form {
+        width: 100%;
+    }
+
+    table th, table td {
+        font-size: 14px;
+    }
+}
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a href="../dashboard-admin.html" class="back-button"><i class="fas fa-arrow-left"></i></a>
+            <h2>Admin Panel</h2>
+        </div>
+        <nav class="sidebar-menu">
+            <a href="#" class="menu-item active"><i class="fas fa-home"></i> Resumen General</a>
+            <a href="../views/dashboard-admin/productos.html" class="menu-item"><i class="fas fa-box"></i> Productos</a>
+            <a href="../views/dashboard-admin/pedidos.html" class="menu-item"><i class="fas fa-shopping-cart"></i> Pedidos</a>
+            <a href="../views/dashboard-admin/usuarios.html" class="menu-item"><i class="fas fa-users"></i> Usuarios</a>
+            <a href="../views/dashboard-admin/reportes.html" class="menu-item"><i class="fas fa-chart-line"></i> Reportes</a>
+            <a href="../views/dashboard-admin/notificaciones.html" class="menu-item"><i class="fas fa-bell"></i> Notificaciones</a>
+            <a href="../views/dashboard-admin/config-admin.html" class="menu-item"><i class="fas fa-cog"></i> Configuración</a>
+        </nav>
+    </aside>
+    <h1>Gestión de Usuarios</h1>
+
+    <!-- Formulario para crear y actualizar usuario -->
+    <div id="user-form">
+        <h2 id="form-title">Nuevo Usuario</h2>
+        <form id="usuarioForm">
+            <input type="hidden" id="usuarioId">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" required><br>
+
+            <label for="apellido">Apellido:</label>
+            <input type="text" id="apellido" required><br>
+
+            <label for="correo_electronico">Correo Electrónico:</label>
+            <input type="email" id="correo_electronico" required><br>
+
+            <label for="contrasena">Contraseña:</label>
+            <input type="password" id="contrasena" required><br>
+
+            <label for="rol_id">Rol ID:</label>
+            <input type="number" id="rol_id" required><br>
+
+            <button type="submit">Guardar</button>
+            <button type="button" onclick="resetForm()">Cancelar</button>
+        </form>
+    </div>
+
+    <!-- Tabla de usuarios -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Correo Electrónico</th>
+                <th>Rol</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="usuariosTableBody">
+            <!-- Las filas se llenarán aquí mediante JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const userData = {
+        nombre: nombre.value,
+        apellido: apellido.value,
+        correo_electronico: correoElectronico.value,
+        contrasena: contrasena.value,
+        rol_id: parseInt(rolId.value),
+    };
+
+    try {
+        let response;
+        if (usuarioId.value) {
+            response = await updateUsuario(usuarioId.value, userData);
+        } else {
+            response = await createUsuario(userData);
+        }
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            alert(`Error: ${errorData.message || 'No se pudo guardar el usuario'}`);
+            return;
+        }
+
+        alert('Usuario guardado exitosamente');
+        fetchUsuarios();
+        resetForm();
+    } catch (error) {
+        console.error('Error al guardar usuario:', error);
+        alert('Hubo un problema al intentar guardar el usuario. Verifica los detalles en la consola.');
+    }
+});
+async function createUsuario(userData) {
+    return await fetch('/api/usuarios', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData)
+    });
+}
+
+async function updateUsuario(id, userData) {
+    return await fetch(`/api/usuarios/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData)
+    });
+}
+
+    </script>
+</body>
+</html>

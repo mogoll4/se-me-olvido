@@ -1,0 +1,124 @@
+<!-- accounts.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="css/style.css">
+    <title>Mi Cuenta - LUMINAR</title>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header__top">
+            <div class="header__container container">
+                <div class="header__contact">
+                    <span>(+00) - 000 - 000</span>
+                    <span>Locación</span>
+                </div>
+
+                <p class="header__alert-news">BLA-BLA-BLA</p>
+
+                <a href="/" class="header__top-action">
+                    Log In / Sign up
+                </a>
+            </div>
+        </div>
+
+        <nav class="nav container">
+            <a href="/index" class="nav__logo">
+                <img src="assets/img/Logo-Luminar.svg" alt="Luminar Logo" class="nav__logo-img">
+            </a>
+
+            <div class="nav__menu" id="nav__menu">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/index" class="nav__link active-link">HOME</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/shop" class="nav__link">Shop</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link">Mi cuenta</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="compare.html" class="nav__link">Comparar</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/" class="nav__link">Login</a>
+                    </li>
+                </ul>
+
+                <div class="header_search">
+                    <input type="text" placeholder="Buscar productos..." class="form__input">
+                    <button class="search__btn">
+                        <i class="fi fi-rr-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="header__user-actions">
+                <a href="/whishlist" class="header__action-btn">
+                    <img src="assets/img/icon-heart.svg" alt="Wishlist">
+                    <span class="count">3</span>
+                </a>
+
+                <a href="/cart" class="header__action-btn">
+                    <img src="assets/img/icon-cart.svg" alt="Carrito">
+                    <span class="count">3</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ACCOUNT SECTION -->
+    <section class="account section--lg">
+        <div class="container">
+            <h2 class="section__title">Mi <span>Cuenta</span></h2>
+            <div class="account__content">
+                <p>Aquí puedes ver y editar la información de tu cuenta, gestionar tus pedidos y cambiar tus preferencias.</p>
+                <div class="account__options grid">
+                    <a href="#" class="account__option account-details">
+                        <i class="fi fi-rr-user"></i>
+                        <span>Detalles de la Cuenta</span>
+                    </a>
+                    <a href="#" class="account__option account-orders">
+                        <i class="fi fi-rr-box"></i>
+                        <span>Mis Pedidos</span>
+                    </a>
+                    <a href="#" class="account__option account-preferences">
+                        <i class="fi fi-rr-settings"></i>
+                        <span>Preferencias</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SWIPER JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <!-- MAIN JS -->
+    <script src="assets/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const accountOptions = document.querySelector('.account__options');
+
+            // Manejar clics en las opciones de la cuenta
+            accountOptions.addEventListener('click', function(event) {
+                if (event.target.closest('.account__option')) {
+                    const selectedOption = event.target.closest('.account__option');
+                    const optionText = selectedOption.querySelector('span').textContent;
+                    alert(`Has seleccionado la opción: "${optionText}"`);
+                    // Aquí podrías agregar lógica adicional para mostrar detalles de la cuenta, pedidos, etc.
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

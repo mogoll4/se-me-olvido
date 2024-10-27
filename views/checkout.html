@@ -1,0 +1,171 @@
+<!-- checkout.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="css/style.css">
+    <title>Checkout - LUMINAR</title>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header__top">
+            <div class="header__container container">
+                <div class="header__contact">
+                    <span>(+00) - 000 - 000</span>
+                    <span>Locación</span>
+                </div>
+
+                <p class="header__alert-news">BLA-BLA-BLA</p>
+
+                <a href="/" class="header__top-action">
+                    Log In / Sign up
+                </a>
+            </div>
+        </div>
+
+        <nav class="nav container">
+            <a href="/index" class="nav__logo">
+                <img src="assets/img/Logo-Luminar.svg" alt="Luminar Logo" class="nav__logo-img">
+            </a>
+
+            <div class="nav__menu" id="nav__menu">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/index" class="nav__link active-link">HOME</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/shop" class="nav__link">Shop</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link">Mi cuenta</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="compare.html" class="nav__link">Comparar</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/" class="nav__link">Login</a>
+                    </li>
+                </ul>
+
+                <div class="header_search">
+                    <input type="text" placeholder="Buscar productos..." class="form__input">
+                    <button class="search__btn">
+                        <i class="fi fi-rr-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="header__user-actions">
+                <a href="/whishlist" class="header__action-btn">
+                    <img src="assets/img/icon-heart.svg" alt="Wishlist">
+                    <span class="count">3</span>
+                </a>
+
+                <a href="/cart" class="header__action-btn">
+                    <img src="assets/img/icon-cart.svg" alt="Carrito">
+                    <span class="count">3</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- CHECKOUT SECTION -->
+    <section class="checkout section--lg">
+        <div class="container">
+            <h2 class="section__title">Procesar <span>Pago</span></h2>
+            <form action="#" class="checkout__form" id="checkoutForm">
+                <div class="checkout__billing">
+                    <h3>Detalles de Facturación</h3>
+                    <div class="form__group">
+                        <label for="name">Nombre Completo</label>
+                        <input type="text" id="name" name="name" class="form__input" required>
+                    </div>
+                    <div class="form__group">
+                        <label for="email">Correo Electrónico</label>
+                        <input type="email" id="email" name="email" class="form__input" required>
+                    </div>
+                    <div class="form__group">
+                        <label for="address">Dirección</label>
+                        <input type="text" id="address" name="address" class="form__input" required>
+                    </div>
+                    <div class="form__group">
+                        <label for="city">Ciudad</label>
+                        <input type="text" id="city" name="city" class="form__input" required>
+                    </div>
+                    <div class="form__group">
+                        <label for="postal-code">Código Postal</label>
+                        <input type="text" id="postal-code" name="postal-code" class="form__input" required>
+                    </div>
+                </div>
+
+                <div class="checkout__payment">
+                    <h3>Método de Pago</h3>
+                    <div class="form__group">
+                        <label for="card-name">Nombre en la Tarjeta</label>
+                        <input type="text" id="card-name" name="card-name" class="form__input" required>
+                    </div>
+                    <div class="form__group">
+                        <label for="card-number">Número de Tarjeta</label>
+                        <input type="text" id="card-number" name="card-number" class="form__input" required>
+                    </div>
+                    <div class="form__group">
+                        <label for="expiry-date">Fecha de Expiración</label>
+                        <input type="text" id="expiry-date" name="expiry-date" class="form__input" placeholder="MM/YY" required>
+                    </div>
+                    <div class="form__group">
+                        <label for="cvc">CVC</label>
+                        <input type="text" id="cvc" name="cvc" class="form__input" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn">Completar Pedido</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- SWIPER JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <!-- MAIN JS -->
+    <script src="assets/js/main.js"></script>
+    <script>
+        document.getElementById('checkoutForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const address = document.getElementById('address').value;
+            const city = document.getElementById('city').value;
+            const postalCode = document.getElementById('postal-code').value;
+            const cardName = document.getElementById('card-name').value;
+            const cardNumber = document.getElementById('card-number').value;
+            const expiryDate = document.getElementById('expiry-date').value;
+            const cvc = document.getElementById('cvc').value;
+
+            if (!name || !email || !address || !city || !postalCode || !cardName || !cardNumber || !expiryDate || !cvc) {
+                alert('Por favor, complete todos los campos.');
+                return;
+            }
+
+            if (cardNumber.length !== 16 || isNaN(cardNumber)) {
+                alert('Por favor, ingrese un número de tarjeta válido de 16 dígitos.');
+                return;
+            }
+
+            if (cvc.length !== 3 || isNaN(cvc)) {
+                alert('Por favor, ingrese un CVC válido de 3 dígitos.');
+                return;
+            }
+
+            alert('Pedido completado exitosamente. Gracias por su compra.');
+            // Aquí podrías agregar lógica adicional para enviar los datos al servidor.
+        });
+    </script>
+</body>
+
+</html>

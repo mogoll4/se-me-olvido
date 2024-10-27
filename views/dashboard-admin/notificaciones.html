@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notificaciones</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f5;
+    margin: 0;
+}
+
+/* Icono de notificación */
+.notification-icon {
+    position: relative;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+
+/* Contador de notificaciones */
+.notification-icon .count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff3b30;
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 50%;
+    font-size: 14px;
+}
+
+/* Modal de notificaciones */
+.modal {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.hidden {
+    display: none;
+}
+
+.modal-content {
+    background-color: #fff;
+    width: 90%;
+    max-width: 500px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: left;
+    position: relative;
+}
+
+/* Título y botón de cierre */
+.modal-content h2 {
+    margin: 0;
+    color: #333;
+    font-size: 20px;
+}
+
+.modal-content .close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+}
+
+/* Lista de notificaciones */
+#notification-list {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 15px;
+}
+
+.notification-item {
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.notification-item.new {
+    background-color: #f9f9ff;
+    font-weight: bold;
+}
+
+.notification-item .date {
+    font-size: 12px;
+    color: #888;
+}
+
+    </style>
+</head>
+<body>
+    <!-- Icono de Notificaciones con Contador -->
+    <div class="notification-icon" onclick="toggleNotificationModal()">
+        <span class="icon">&#128276;</span> <!-- Icono de campana -->
+        <span class="count" id="notification-count">3</span> <!-- Contador de notificaciones -->
+    </div>
+
+    <!-- Modal de Notificaciones -->
+    <div id="notification-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close" onclick="toggleNotificationModal()">&times;</span>
+            <h2>Notificaciones</h2>
+            <ul id="notification-list">
+                <!-- Aquí se cargarán las notificaciones dinámicamente -->
+                <li class="notification-item new">
+                    <p><strong>Nuevo Pedido</strong>: Has recibido un nuevo pedido.</p>
+                    <span class="date">2024-10-26</span>
+                </li>
+                <li class="notification-item">
+                    <p><strong>Actualización</strong>: Tu perfil ha sido actualizado.</p>
+                    <span class="date">2024-10-25</span>
+                </li>
+                <li class="notification-item">
+                    <p><strong>Recordatorio</strong>: El sistema estará en mantenimiento.</p>
+                    <span class="date">2024-10-24</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Función para abrir o cerrar el modal de notificaciones
+function toggleNotificationModal() {
+    const modal = document.getElementById("notification-modal");
+    modal.classList.toggle("hidden");
+}
+
+// Simulación de carga de notificaciones
+document.addEventListener("DOMContentLoaded", () => {
+    const count = document.getElementById("notification-count");
+    const notifications = document.querySelectorAll(".notification-item.new");
+    count.textContent = notifications.length; // Actualiza el contador según notificaciones nuevas
+});
+
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

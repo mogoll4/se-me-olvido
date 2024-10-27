@@ -1,0 +1,139 @@
+CREATE DATABASE Luminar;
+USE Luminar;
+
+-- Tabla de Roles
+CREATE TABLE Roles (
+    rol_id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_rol VARCHAR(50)  -- Ejemplos: 'administrador', 'empleado', 'gerente'
+);
+
+-- Tabla de Usuarios
+CREATE TABLE Usuarios (
+    usuario_id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100),
+    apellido VARCHAR(100),
+    correo_electronico VARCHAR(100) UNIQUE,
+    contrasena VARCHAR(255),
+    rol_id INT,
+    fecha_registro DATE,
+    FOREIGN KEY (rol_id) REFERENCES Roles(rol_id)
+);
+
+-- Tabla de Permisos (opcional)
+CREATE TABLE Permisos (
+    permiso_id INT PRIMARY KEY AUTO_INCREMENT,
+    descripcion VARCHAR(255)
+);
+
+-- Relación entre Roles y Permisos
+CREATE TABLE Rol_Permisos (
+    rol_id INT,
+    permiso_id INT,
+    FOREIGN KEY (rol_id) REFERENCES Roles(rol_id),
+    FOREIGN KEY (permiso_id) REFERENCES Permisos(permiso_id),
+    PRIMARY KEY (rol_id, permiso_id)
+);
+
+-- Tabla de Clientes
+CREATE TABLE Clientes (
+    cliente_id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100),
+    apellido VARCHAR(100),
+    correo_electronico VARCHAR(100),
+    telefono VARCHAR(15),
+    direccion VARCHAR(255),
+    fecha_registro DATE
+);
+
+-- Tabla de Categorías
+CREATE TABLE Categorias (
+    categoria_id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_categoria VARCHAR(100)
+);
+
+-- Tabla de Productos
+CREATE TABLE Productos (
+    producto_id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_producto VARCHAR(100),
+    descripcion TEXT,
+    talla VARCHAR(10),
+    color VARCHAR(50),
+    precio DECIMAL(10, 2),
+    cantidad_stock INT,
+    categoria_id INT,
+    FOREIGN KEY (categoria_id) REFERENCES Categorias(categoria_id)
+);
+
+-- Tabla de Órdenes
+CREATE TABLE Ordenes (
+    orden_id INT PRIMARY KEY AUTO_INCREMENT,
+    cliente_id INT,
+    usuario_id INT,  -- Usuario (empleado) que realiza la orden
+    fecha_orden DATE,
+    total DECIMAL(10, 2),
+    FOREIGN KEY (cliente_id) REFERENCES Clientes(cliente_id),
+    FOREIGN KEY (usuario_id) REFERENCES Usuarios(usuario_id)
+);
+
+-- Detalle de las Órdenes
+CREATE TABLE Detalle_Ordenes (
+    detalle_id INT PRIMARY KEY AUTO_INCREMENT,
+    orden_id INT,
+    producto_id INT,
+    cantidad INT,
+    precio_unitario DECIMAL(10, 2),
+    FOREIGN KEY (orden_id) REFERENCES Ordenes(orden_id),
+    FOREIGN KEY (producto_id) REFERENCES Productos(producto_id)
+);
+
+-- Tabla de Proveedores
+CREATE TABLE Proveedores (
+    proveedor_id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_proveedor VARCHAR(100),
+    contacto_proveedor VARCHAR(100),
+    telefono VARCHAR(15),
+    correo_electronico VARCHAR(100),
+    direccion VARCHAR(255)
+);
+
+-- Tabla de Compras
+CREATE TABLE Compras (
+    compra_id INT PRIMARY KEY AUTO_INCREMENT,
+    proveedor_id INT,
+    usuario_id INT,  -- Usuario (empleado) responsable de la compra
+    fecha_compra DATE,
+    total_compra DECIMAL(10, 2),
+    FOREIGN KEY (proveedor_id) REFERENCES Proveedores(proveedor_id),
+    FOREIGN KEY (usuario_id) REFERENCES Usuarios(usuario_id)
+);
+
+-- Detalle de las Compras
+CREATE TABLE Detalle_Compras (
+    detalle_compra_id INT PRIMARY KEY AUTO_INCREMENT,
+    compra_id INT,
+    producto_id INT,
+    cantidad INT,
+    precio_compra DECIMAL(10, 2),
+    FOREIGN KEY (compra_id) REFERENCES Compras(compra_id),
+    FOREIGN KEY (producto_id) REFERENCES Productos(producto_id)
+);
+
+-- Tabla de Pagos
+CREATE TABLE Pagos (
+    pago_id INT PRIMARY KEY AUTO_INCREMENT,
+    orden_id INT,
+    fecha_pago DATE,
+    monto DECIMAL(10, 2),
+    metodo_pago VARCHAR(50),
+    FOREIGN KEY (orden_id) REFERENCES Ordenes(orden_id)
+);
+
+INSERT INTO Roles (rol_id, nombre_rol) VALUES 
+(1, 'Cliente'),
+(2, 'Vendedor'),
+(3, 'Administrador');
+
+INSERT INTO Categorias (nombre_categoria) VALUES 
+('1'),
+('Ropa Casual'),
+('Ropa Elegante');

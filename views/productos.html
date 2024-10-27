@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos</title>
+    <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+    <style>
+        /* General Page Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        /* Form Styles */
+        .form-group label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-control {
+            border-radius: 4px;
+        }
+
+        #submitButton {
+            background-color: #e91e63;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #submitButton:hover {
+            background-color: #e91e63;
+        }
+
+        /* Table Styles */
+        .table {
+            margin-top: 20px;
+        }
+
+        .table thead {
+            background-color: #e91e63;
+            color: #fff;
+        }
+
+        .table tbody tr:hover {
+            background-color: #e91e63;
+        }
+
+        .btn-warning, .btn-danger {
+            margin-right: 5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .table thead, .table tbody {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Gestión de Productos</h1>
+        <form id="productForm">
+            <input type="hidden" id="producto_id" name="producto_id">
+            <div class="form-group">
+                <label for="nombre_producto">Nombre del Producto</label>
+                <input type="text" class="form-control" id="nombre_producto" name="nombre_producto" required>
+            </div>
+            <div class="form-group">
+                <label for="descripcion">Descripción</label>
+                <textarea class="form-control" id="descripcion" name="descripcion" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="talla">Talla</label>
+                <input type="text" class="form-control" id="talla" name="talla">
+            </div>
+            <div class="form-group">
+                <label for="color">Color</label>
+                <input type="text" class="form-control" id="color" name="color">
+            </div>
+            <div class="form-group">
+                <label for="precio">Precio</label>
+                <input type="number" step="0.01" class="form-control" id="precio" name="precio" required>
+            </div>
+            <div class="form-group">
+                <label for="cantidad_stock">Cantidad en Stock</label>
+                <input type="number" class="form-control" id="cantidad_stock" name="cantidad_stock" required>
+            </div>
+            <div class="form-group">
+                <label for="categoria_id">Categoría</label>
+                <input type="number" class="form-control" id="categoria_id" name="categoria_id" required>
+            </div>
+            <button type="submit" class="btn btn-primary" id="submitButton">Agregar Producto</button>
+        </form>
+        <div class="mt-5">
+            <h2>Lista de Productos</h2>
+            <table class="table" id="productsTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Talla</th>
+                        <th>Color</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Categoría</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="productList">
+                    <!-- Aquí se insertarán los productos -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            let isEditing = false;
+
+            const loadProducts = () => {
+                $.get('/api/productos', function(data) {
+                    console.log("Productos recibidos desde el backend:", data);
+                    $('#productList').empty();
+                    if (Array.isArray(data) && data.length > 0) {
+                        data.forEach(product => {
+                            $('#productList').append(`
+                                <tr>
+                                    <td>${product.producto_id}</td>
+                                    <td>${product.nombre_producto}</td>
+                                    <td>${product.descripcion}</td>
+                                    <td>${product.talla}</td>
+                                    <td>${product.color}</td>
+                                    <td>${product.precio}</td>
+                                    <td>${product.cantidad_stock}</td>
+                                    <td>${product.categoria_id}</td>
+                                    <td>
+                                        <button class="btn btn-warning btn-sm edit-btn" data-id="${product.producto_id}">Editar</button>
+                                        <button class="btn btn-danger btn-sm delete-btn" data-id="${product.producto_id}">Eliminar</button>
+                                    </td>
+                                </tr>
+                            `);
+                        });
+                    } else {
+                        $('#productList').append('<tr><td colspan="9">No se encontraron productos.</td></tr>');
+                    }
+                }).fail(function(xhr, status, error) {
+                    console.error('Error al cargar productos:', xhr.responseText);
+                });
+            };
+
+            loadProducts();
+
+            // Agregar o actualizar producto
+            $('#productForm').submit(function(event) {
+                event.preventDefault();
+                const productId = $('#producto_id').val();
+                const productData = $(this).serialize();
+                if (isEditing) {
+                    // Actualizar producto
+                    $.ajax({
+                        url: `/api/productos/${productId}`,
+                        type: 'PUT',
+                        data: productData,
+                        success: function(response) {
+                            alert('Producto actualizado con éxito');
+                            loadProducts(); // Cargar los productos después de actualizar
+                            resetForm();
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error al actualizar el producto:', xhr.responseText);
+                            alert(`Error al actualizar el producto. Revisa la consola para más detalles. Código de error: ${xhr.status} - ${xhr.statusText}`);
+                        }
+                    });
+                } else {
+                    // Agregar nuevo producto
+                    $.post('/api/productos', productData, function(response) {
+                        alert('Producto agregado con éxito');
+                        loadProducts(); // Cargar los productos después de agregar uno nuevo
+                        resetForm();
+                    }).fail(function(xhr, status, error) {
+                        console.error('Error al agregar el producto:', xhr.responseText);
+                        alert(`Error al agregar el producto. Revisa la consola para más detalles. Código de error: ${xhr.status} - ${xhr.statusText}`);
+                    });
+                }
+            });
+
+            // Eliminar producto
+            $(document).on('click', '.delete-btn', function() {
+                const id = $(this).data('id');
+                $.ajax({
+                    url: `/api/productos/${id}`,
+                    type: 'DELETE',
+                    success: function(result) {
+                        alert('Producto eliminado con éxito');
+                        loadProducts(); // Cargar los productos después de eliminar uno
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error al eliminar el producto:', xhr.responseText);
+                        alert(`Error al eliminar el producto. Revisa la consola para más detalles. Código de error: ${xhr.status} - ${xhr.statusText}`);
+                    }
+                });
+            });
+
+            // Editar producto
+            $(document).on('click', '.edit-btn', function() {
+                const id = $(this).data('id');
+                $.get(`/api/productos/${id}`, function(product) {
+                    $('#producto_id').val(product.producto_id);
+                    $('#nombre_producto').val(product.nombre_producto);
+                    $('#descripcion').val(product.descripcion);
+                    $('#talla').val(product.talla);
+                    $('#color').val(product.color);
+                    $('#precio').val(product.precio);
+                    $('#cantidad_stock').val(product.cantidad_stock);
+                    $('#categoria_id').val(product.categoria_id);
+                    $('#submitButton').text('Actualizar Producto');
+                    isEditing = true;
+                }).fail(function(xhr, status, error) {
+                    console.error('Error al obtener el producto:', xhr.responseText);
+                    alert(`Error al obtener el producto. Revisa la consola para más detalles. Código de error: ${xhr.status} - ${xhr.statusText}`);
+                });
+            });
+
+            // Resetear formulario
+            const resetForm = () => {
+                $('#productForm')[0].reset();
+                $('#producto_id').val('');
+                $('#submitButton').text('Agregar Producto');
+                isEditing = false;
+            };
+        });
+    </script>
+</body>
+</html>

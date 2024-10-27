@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--==FLATICON==-->
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css'>
+
+    <!--==SWIPER CSS==-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <!--==CSS==-->
+    <link rel="stylesheet" href="css/style.css">
+    <title>Dashboard Cliente - LUMINAR</title>
+</head>
+
+<body>
+    <!--== HEADER ==-->
+    <header class="header">
+        <div class="header__top">
+            <div class="header__container container">
+                <div class="header__contact">
+                    <span>(+00) - 000 - 000</span>
+                    <span>Locación</span>
+                </div>
+
+                <p class="header__alert-news">Bienvenido a tu Dashboard de Cliente</p>
+
+                <a href="#" id="logout" class="header__top-action">
+                    Cerrar Sesión
+                </a>
+            </div>
+        </div>
+
+        <nav class="nav container">
+            <a href="/index" class="nav__logo">
+                <img src="assets/img/Logo-Luminar.svg" alt="Luminar Logo" class="nav__logo-img">
+            </a>
+
+            <div class="nav__menu" id="nav__menu">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/index" class="nav__link">HOME</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/shop" class="nav__link">Shop</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link active-link">Mi cuenta</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="compare.html" class="nav__link">Comparar</a>
+                    </li>
+                </ul>
+
+                <div class="header_search">
+                    <input type="text" placeholder="Buscar productos..." class="form__input">
+                    <button class="search__btn">
+                        <i class="fi fi-rr-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="header__user-actions">
+                <a href="/whishlist" class="header__action-btn">
+                    <img src="assets/img/icon-heart.svg" alt="Wishlist">
+                    <span class="count">3</span>
+                </a>
+
+                <a href="/cart" class="header__action-btn">
+                    <img src="assets/img/icon-cart.svg" alt="Carrito">
+                    <span class="count">3</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!--=== DASHBOARD CLIENTE ===-->
+    <section class="dashboard section--lg">
+        <div class="dashboard__container container">
+            <h2>Bienvenido, <span id="user-name">[Nombre del Cliente]</span></h2>
+            <p>Aquí puedes ver y administrar tus pedidos, productos favoritos, y tu información personal.</p>
+
+            <div class="dashboard__options grid">
+                <div class="dashboard__card">
+                    <i class="fi fi-rr-box"></i>
+                    <h3>Mis Pedidos</h3>
+                    <p>Revisa el estado de tus pedidos actuales y pasados.</p>
+                    <a href="/orders" class="btn">Ver Pedidos</a>
+                </div>
+                <div class="dashboard__card">
+                    <i class="fi fi-rr-heart"></i>
+                    <h3>Productos Favoritos</h3>
+                    <p>Accede a la lista de productos que has agregado a favoritos.</p>
+                    <a href="/whishlist" class="btn">Ver Favoritos</a>
+                </div>
+                <div class="dashboard__card">
+                    <i class="fi fi-rr-user"></i>
+                    <h3>Información Personal</h3>
+                    <p>Actualiza tus datos personales y preferencias.</p>
+                    <a href="/accounts" class="btn">Actualizar Información</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--=== SWIPER JS ===-->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!--=== MAIN JS ===-->
+    <script src="assets/js/main.js"></script>
+
+    <!-- Cerrar Sesión y Manejo del Token -->
+    <script>
+        // Función para cerrar sesión
+        function cerrarSesion() {
+            localStorage.removeItem('token'); // Eliminar el token
+            localStorage.removeItem('rol_id'); // Eliminar el rol
+            alert('Has cerrado sesión exitosamente.');
+            window.location.href = '/'; // Redirigir a la página de inicio de sesión
+        }
+
+        // Botón de Cerrar Sesión
+        const logoutBtn = document.getElementById('logout');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', cerrarSesion);
+        }
+
+        // Mostrar el nombre del usuario al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            const rolId = localStorage.getItem('rol_id');
+
+            if (token && rolId) {
+                try {
+                    // Decodificar el token para obtener la información del usuario
+                    const base64Url = token.split('.')[1];
+                    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                    }).join(''));
+                    const payload = JSON.parse(jsonPayload);
+
+                    // Mostrar el nombre del usuario
+                    document.getElementById('user-name').innerText = payload.nombre || 'Cliente';
+                } catch (err) {
+                    console.error('Error al decodificar el token:', err);
+                    cerrarSesion(); // Cerrar sesión si hay un error con el token
+                }
+            } else {
+                // Si no hay token o rol, redirigir al inicio de sesión
+                cerrarSesion();
+            }
+        });
+    </script>
+</body>
+
+</html>
